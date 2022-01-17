@@ -1,0 +1,50 @@
+﻿@page "/"
+@using System.IO
+@using System.Diagnostics
+
+<h1>Hello, users!</h1>
+
+<h3>Welcome to MyOstHHS.</h3>
+
+<button class="btn btn-primary" @onclick="CreateOsTicket">Create OsTicket Environment</button>
+
+<h4>@url</h4>
+<h4>@dbhost</h4>
+<h4>@dbuser</h4>
+<h4>@dbpw</h4>
+@code{
+    Random random;
+
+    protected override void OnInitialized()
+    {
+        random = new Random();
+    }
+
+    string url = "";
+    string dbhost = "";
+    string dbuser = "";
+    string dbpw = "";
+
+    void CreateOsTicket()
+    {
+        int num = random.Next(Int32.MaxValue);
+
+        var proces = new Process()
+        {
+
+            StartInfo = new ProcessStartInfo()
+            {
+                FileName = "powershell.exe",
+                Arguments = $"./myscript.ps1 {num}",
+                WorkingDirectory = Environment.CurrentDirectory + "/Pages",
+
+            }
+        };
+        proces.Start();
+        url = $"Your URL is https://myosthhs{num}.azurewebsites.net";
+        dbhost = "Database host is myost";
+        dbuser = "Database user is root";
+        dbpw = "Database password is root";
+
+    }
+}
